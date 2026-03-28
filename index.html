@@ -47,7 +47,10 @@
         .table-card-title { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; color: var(--text-dark); letter-spacing: 0.05em; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.01); }
         .table-card-title::after { content: "\2197"; color: var(--text-light); font-weight: 400; font-size: 1.1rem; transition: color var(--transition); }
         .table-card:hover .table-card-title::after { color: var(--accent); }
-        .table-container { flex-grow: 1; }
+        .table-container { flex-grow: 1; overflow-x: auto; }
+        /* Hide scrollbar when not needed (2 models fit fine) */
+        .table-container::-webkit-scrollbar { height: 4px; }
+        .table-container::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 2px; }
         
         table { width: 100%; border-collapse: collapse; }
         th { padding: 0.75rem 1.25rem; text-align: right; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); }
@@ -1468,81 +1471,52 @@ function closeModal() {
 document.getElementById('overlay').addEventListener('click', closeModal);
 document.getElementById('modal-close').addEventListener('click', closeModal);
 
-document.querySelectorAll('.table-card').forEach(card => {
-    card.addEventListener('click', () => {
-        const title = card.querySelector('.table-card-title').textContent.replace('\u2197', '').trim();
-        document.getElementById('modal-title').textContent = title;
-        const tabBar = document.getElementById('tab-bar');
-        const tabPanels = document.getElementById('tab-panels');
-        tabBar.innerHTML = '';
-        tabPanels.innerHTML = '';
+document.querySelectorAll('.table-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+        try {
+            var titleEl = card.querySelector('.table-card-title');
+            var title = titleEl.textContent.replace('\u2197', '').trim();
+            document.getElementById('modal-title').textContent = title;
 
-        const figsAttr = card.dataset.figs;
-        if (!figsAttr) {
-            tabPanels.innerHTML = '<div style="text-align:center; padding: 60px; color: var(--text-muted); font-weight: 500;">No visual data available for this metric.</div>';
+            var tabBar = document.getElementById('tab-bar');
+            var tabPanels = document.getElementById('tab-panels');
+            tabBar.innerHTML = '';
+            tabPanels.innerHTML = '';
+
+            var figsRaw = card.getAttribute('data-figs');
+            if (!figsRaw) {
+                tabPanels.innerHTML = '<div style="text-align:center; padding:60px; color:#8ba0b9;">No figures available.</div>';
+                document.getElementById('modal').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
+
+            var figs = JSON.parse(figsRaw);
+            var html = '<div style="display:flex; flex-direction:column; gap:40px;">';
+
+            for (var i = 0; i < figs.length; i++) {
+                var label = figs[i][0];
+                var src = figs[i][1];
+                html += '<div>';
+                html += '<div class="plot-title">' + label + '</div>';
+                html += '<img src="' + src + '" style="width:100%; height:auto; display:block;">';
+                html += '</div>';
+            }
+
+            html += '</div>';
+
+            var panel = document.createElement('div');
+            panel.className = 'tab-content active';
+            panel.innerHTML = html;
+            tabPanels.appendChild(panel);
+
             document.getElementById('modal').classList.add('active');
             document.getElementById('overlay').classList.add('active');
             document.body.style.overflow = 'hidden';
-            return;
+        } catch(e) {
+            alert('Error: ' + e.message);
         }
-        const figs = JSON.parse(figsAttr);
-        const maps = figs.filter(f => f[0].toLowerCase().includes('map'));
-        const scatters = figs.filter(f => f[0].toLowerCase().startsWith('scatter'));
-        const timeseries = figs.filter(f => f[0] === 'Timeseries');
-        const tabs = [];
-
-        if (maps.length > 0) {
-            let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
-            maps.forEach(([label, src]) => {
-                html += '<div><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-            });
-            html += '</div>';
-            tabs.push({ id: 'maps', label: 'Maps', html: html });
-        }
-
-        if (scatters.length > 0) {
-            let html = '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 30px;">';
-            scatters.forEach(([label, src]) => {
-                const gridCol = label.includes('comparison') ? 'grid-column: 1 / -1;' : '';
-                html += '<div style="' + gridCol + '"><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-            });
-            html += '</div>';
-            tabs.push({ id: 'scatter', label: 'Scatter Plots', html: html });
-        }
-
-        if (timeseries.length > 0) {
-            let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
-            timeseries.forEach(([label, src]) => {
-                html += '<div><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-            });
-            html += '</div>';
-            tabs.push({ id: 'timeseries', label: 'Timeseries', html: html });
-        }
-
-        if (tabs.length === 0) return;
-
-        tabs.forEach((tab, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
-            btn.textContent = tab.label;
-            btn.dataset.tabid = tab.id;
-            btn.addEventListener('click', (e) => {
-                tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                tabPanels.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
-                e.target.classList.add('active');
-                document.getElementById('tab-' + tab.id).classList.add('active');
-            });
-            tabBar.appendChild(btn);
-            const panel = document.createElement('div');
-            panel.id = 'tab-' + tab.id;
-            panel.className = 'tab-content' + (i === 0 ? ' active' : '');
-            panel.innerHTML = tab.html;
-            tabPanels.appendChild(panel);
-        });
-
-        document.getElementById('modal').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
-        document.body.style.overflow = 'hidden';
     });
 });
 </script>

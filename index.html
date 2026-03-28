@@ -1,272 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ocean BGC Models Benchmark</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg-main: #0b0f19;
-    --card-bg: #151b2b;
-    --primary: #f8fafc;
-    --primary-light: #cbd5e1;
-    --accent: #38bdf8;
-    --accent-hover: #7dd3fc;
-    --text-main: #e2e8f0;
-    --text-muted: #94a3b8;
-    --border: #1e293b;
-    --winner-bg: rgba(56, 189, 248, 0.15);
-    --winner-text: #38bdf8;
-    --winner-border: rgba(56, 189, 248, 0.3);
-  }
-
-  body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    margin: 0; padding: 0;
-    background: var(--bg-main);
-    color: var(--text-main);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .header {
-    background: #06090f;
-    color: white;
-    padding: 40px 5vw;
-    border-bottom: 1px solid var(--border);
-  }
-  .header h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px; color: var(--primary); }
-  .header p { margin: 10px 0 0; color: var(--text-muted); font-size: 16px; font-weight: 400; }
-
-  .container { max-width: 1600px; margin: 0 auto; padding: 40px 5vw; }
-
-  .section-group { 
-    margin-bottom: 60px; 
-    background: var(--card-bg); 
-    padding: 30px; 
-    border-radius: 16px; 
-    border: 1px solid var(--border); 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-  }
-  h2 { 
-    color: var(--primary); 
-    font-size: 22px; 
-    font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  h2 a {
-    font-size: 13px;
-    background: var(--bg-main);
-    padding: 6px 14px;
-    border-radius: 20px;
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    transition: all 0.2s;
-  }
-  h2 a:hover { background: var(--winner-bg); border-color: var(--accent); color: var(--accent-hover); }
-
-  h3 { 
-    color: var(--accent); 
-    font-size: 13px; 
-    text-transform: uppercase; 
-    letter-spacing: 1.5px; 
-    margin: 40px 0 20px; 
-    font-weight: 600; 
-    border-bottom: 1px solid var(--border); 
-    padding-bottom: 10px; 
-  }
-
-  .intro-text { font-size: 15px; color: var(--primary-light); margin-bottom: 30px; background: var(--card-bg); padding: 15px 20px; border-radius: 8px; border: 1px solid var(--border); display: inline-block; }
-  .intro-text a { color: var(--accent); text-decoration: none; font-weight: 600; }
-
-  .tables-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-  }
-
-  .table-card {
-    background: var(--bg-main);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .table-card:hover { 
-    transform: translateY(-4px); 
-    box-shadow: 0 12px 24px -5px rgba(0,0,0,0.4); 
-    border-color: #334155;
-  }
-
-  .table-card-title {
-    margin: 0;
-    padding: 16px 20px;
-    background: rgba(255,255,255,0.02);
-    color: var(--primary);
-    font-size: 15px;
-    font-weight: 700;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .table-card-title::after {
-    content: "\2197";
-    color: var(--text-muted);
-    font-weight: 400;
-    font-size: 18px;
-    transition: color 0.2s;
-  }
-  .table-card:hover .table-card-title::after { color: var(--accent); }
-
-  .table-container { overflow-x: auto; flex-grow: 1; }
-  table { width: 100%; border-collapse: collapse; }
-
-  th {
-    background: rgba(255,255,255,0.02);
-    color: var(--text-muted);
-    padding: 12px 16px;
-    text-align: right;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
-  }
-  th:first-child, th:nth-child(2) { text-align: left; }
-
-  td {
-    padding: 14px 16px;
-    text-align: right;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text-main);
-  }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,0.01); }
-
-  td.var-name {
-    text-align: left;
-    font-weight: 600;
-    color: var(--primary-light);
-    width: 35%;
-  }
-  td:nth-child(2) { text-align: left; color: var(--text-muted); font-size: 11px; }
-
-  .table-card td[style] {
-    background: transparent !important;
-    color: var(--text-main) !important;
-  }
-  .table-card td b {
-    background-color: var(--winner-bg);
-    color: var(--winner-text);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    display: inline-block;
-    border: 1px solid var(--winner-border);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
-  }
-
-  .na { color: #475569 !important; font-style: italic; }
-
-  .overlay { 
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 999; 
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .overlay.active { display: block; opacity: 1; }
-
-  .modal {
-    display: none; position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -48%);
-    z-index: 1001; background: var(--card-bg); border-radius: 16px;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
-    width: 95vw; max-width: 1500px; max-height: 90vh;
-    overflow: hidden; flex-direction: column;
-    opacity: 0; transition: all 0.3s ease;
-    border: 1px solid var(--border);
-  }
-  .modal.active { display: flex; transform: translate(-50%, -50%); opacity: 1; }
-
-  .modal-header {
-    background: #06090f; padding: 20px 30px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal-header h3 { margin: 0; font-size: 20px; color: var(--primary); border: none; padding: 0; letter-spacing: normal; text-transform: none; }
-  .modal-close { cursor: pointer; font-size: 32px; color: var(--text-muted); background: none; border: none; line-height: 1; transition: color 0.2s; padding: 0; }
-  .modal-close:hover { color: white; }
-
-  .tab-bar {
-    display: flex; gap: 30px; border-bottom: 1px solid var(--border);
-    background: var(--card-bg); padding: 0 30px;
-  }
-  .tab-btn {
-    padding: 16px 4px; cursor: pointer; border: none;
-    background: transparent; font-size: 15px; font-weight: 600;
-    color: var(--text-muted); border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-  }
-  .tab-btn:hover { color: var(--primary); }
-  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  .modal-body { overflow-y: auto; padding: 30px; background: var(--bg-main); flex-grow: 1; }
-  .modal-body::-webkit-scrollbar { width: 10px; }
-  .modal-body::-webkit-scrollbar-track { background: var(--bg-main); }
-  .modal-body::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
-  .modal-body::-webkit-scrollbar-thumb:hover { background: #475569; }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-  .plot-title { color: var(--primary); font-weight: 600; font-size: 16px; margin: 0 0 12px 0; }
-  .tab-content img { 
-    border-radius: 8px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
-    background: white;
-    border: 1px solid #334155;
-  }
-
-  .footer {
-    text-align: center; padding: 40px 20px; background: #06090f; color: var(--text-muted); font-size: 14px; border-top: 1px solid var(--border);
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ocean BGC Models Benchmark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-main: #061121;
+            --bg-surface: #0d1e36;
+            --bg-night: #030812;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.04);
+            --text-dark: #f8fafc;
+            --text-main: #cbd5e1;
+            --text-muted: #8ba0b9;
+            --text-light: #5c7796;
+            --accent: #1ac0c6;
+            --accent-hover: #00e5ff;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius: 16px;
+            --transition: 0.2s ease;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font); background: var(--bg-main); color: var(--text-main); line-height: 1.5; font-size: 14px; -webkit-font-smoothing: antialiased; }
+        .header { background: var(--bg-surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.25rem; font-weight: 800; color: var(--text-dark); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; letter-spacing: 0.05em; }
+        .logo-icon-wrap { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); border-radius: 10px; padding: 6px; color: #000; box-shadow: 0 0 12px rgba(26, 192, 198, 0.3); }
+        .tagline-banner { max-width: 1400px; margin: 0 auto; padding: 0.8rem 1.5rem; background: rgba(26, 192, 198, 0.03); border-bottom: 1px solid var(--border); }
+        .tagline-banner p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        .tagline-banner strong { color: var(--accent); }
+        .tagline-banner a { color: var(--text-dark); text-decoration: none; font-weight: 600; border-bottom: 1px dotted var(--accent); transition: color var(--transition); }
+        .tagline-banner a:hover { color: var(--accent); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .section-title a { font-size: 0.65rem; background: rgba(255,255,255,0.05); color: var(--text-main); padding: 0.2rem 0.6rem; border-radius: 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border); transition: all var(--transition); }
+        .section-title a:hover { background: rgba(26, 192, 198, 0.1); color: var(--accent); border-color: rgba(26, 192, 198, 0.3); }
+        .layer-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 8px; }
+        .layer-title::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+        .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
+        .table-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; cursor: pointer; transition: all var(--transition); overflow: hidden; position: relative; }
+        .table-card:hover { border-color: var(--text-light); box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 12px rgba(26, 192, 198, 0.05); transform: translateY(-2px); }
+        .table-card-title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-dark); letter-spacing: 0.05em; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.01); }
+        .table-card-title::after { content: "\2197"; color: var(--text-light); font-weight: 400; font-size: 1.1rem; transition: color var(--transition); }
+        .table-card:hover .table-card-title::after { color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 0.75rem 1.25rem; text-align: right; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); }
+        th:first-child, th:nth-child(2) { text-align: left; }
+        td { padding: 0.8rem 1.25rem; text-align: right; font-size: 0.85rem; color: var(--text-main); border-bottom: 1px solid var(--border-light); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.015); }
+        td.var-name { text-align: left; font-weight: 600; color: var(--text-dark); width: 30%; }
+        td:nth-child(2) { text-align: left; color: var(--text-muted); font-size: 0.7rem; }
+        .table-card td[style] { background: transparent !important; color: var(--text-main) !important; }
+        .table-card td b { display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--accent); background: rgba(26, 192, 198, 0.1); padding: 0.2rem 0.6rem; border-radius: 20px; border: 1px solid rgba(26, 192, 198, 0.25); letter-spacing: 0.02em; }
+        .na { color: var(--text-light) !important; font-style: italic; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 8, 18, 0.85); backdrop-filter: blur(6px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
+        .overlay.active { display: block; opacity: 1; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -48%); z-index: 1001; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(26, 192, 198, 0.1); width: 95vw; max-width: 1400px; max-height: 90vh; overflow: hidden; flex-direction: column; opacity: 0; transition: all 0.3s ease; }
+        .modal.active { display: flex; transform: translate(-50%, -50%); opacity: 1; }
+        .modal-header { background: var(--bg-main); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .modal-header h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-dark); }
+        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); font-family: var(--font); line-height: 1; transition: color var(--transition); }
+        .modal-close:hover { color: var(--accent); }
+        .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; }
+        .tab-bar::-webkit-scrollbar { display: none; }
+        .tab-btn { padding: 1rem 1.5rem; cursor: pointer; border: none; background: transparent; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all var(--transition); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .tab-btn:hover { color: var(--text-dark); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .modal-body { overflow-y: auto; padding: 1.5rem; background: var(--bg-main); flex-grow: 1; }
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: var(--bg-main); }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 4px; }
+        .modal-body::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .plot-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+        .tab-content img { border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); background: #fff; border: 1px solid var(--border); }
+        .footer { max-width: 1400px; margin: 3rem auto 0; padding: 1.5rem; border-top: 1px solid var(--border); text-align: center; }
+    </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>Ocean BGC Models Benchmark</h1>
-  <p>Performance Evaluation against In-situ and Satellite Observations (2008–2024)</p>
-</div>
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="#">
+            <span class="logo-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </span>
+            Ocean BGC Benchmark
+        </a>
+    </div>
+    <div class="tagline-banner">
+        <p>Performance Evaluation against In-situ and Satellite Observations (2008–2024).<br>
+        Models Evaluated: <strong><a href="https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_BGC_001_029" target="_blank">FREEBIORYS</a></strong> &middot; <strong><a href="https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_BGC_001_028/description" target="_blank">BIOMER4</a></strong></p>
+    </div>
+</header>
 
-<div class="container">
+<main class="container">
 
-  <div class="intro-text">
-    <strong>Models Evaluated:</strong> 
-    <a href="https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_BGC_001_029" target="_blank">FREEBIORYS (CMEMS 001_029)</a> &nbsp;&middot;&nbsp; 
-    <a href="https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_BGC_001_028/description" target="_blank">BIOMER4 (CMEMS 001_028)</a>
-  </div>
-  <div class="section-group">
-    <h2>BGC-Argo Based Observations
-      <a href="https://www.seanoe.org/data/00765/102324/" target="_blank">SEANOE 102324</a>
-      <a href="https://www.seanoe.org/data/00311/42182/" target="_blank">SEANOE 42182</a>
-      <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BGC_NUTRIENTS_CARBON_PROFILES_MYNRT_015_009" target="_blank">CMEMS 015_009</a>
-    </h2>
-    <h3>Productive Layer</h3>
+    <div class="section-title">
+        BGC-Argo Based Observations
+        <a href="https://www.seanoe.org/data/00765/102324/" target="_blank">SEANOE 102324</a>
+        <a href="https://www.seanoe.org/data/00311/42182/" target="_blank">SEANOE 42182</a>
+        <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BGC_NUTRIENTS_CARBON_PROFILES_MYNRT_015_009" target="_blank">CMEMS 015_009</a>
+    </div>
+
+    <div class="layer-title">Productive Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Chlorophyll a</div>
@@ -646,8 +490,10 @@
 </table>
 </div>
 </div>
+
     </div>
-    <h3>Mesopelagic Layer</h3>
+
+    <div class="layer-title">Mesopelagic Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Chlorophyll a</div>
@@ -1027,8 +873,10 @@
 </table>
 </div>
 </div>
+
     </div>
-    <h3>Emergent Properties</h3>
+
+    <div class="layer-title">Emergent Properties</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="dcm_depth" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_dcm_depth_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_dcm_depth_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_dcm_depth_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_dcm_depth_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_dcm_depth_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_dcm_depth_scatter_comparison.png&quot;]]">
 <div class="table-card-title">DCM depth</div>
@@ -1246,15 +1094,16 @@
 </table>
 </div>
 </div>
-    </div>
-  </div>
 
-  <div class="section-group">
-    <h2>In-situ Climatology / Database
-      <a href="https://doi.pangaea.de/10.1594/PANGAEA.785501" target="_blank">PANGAEA 785501</a>
-      <a href="https://www.geotraces.org/" target="_blank">GEOTRACES</a>
-    </h2>
-    <h3>Productive Layer</h3>
+    </div>
+
+    <div class="section-title">
+        In-situ Climatology / Database
+        <a href="https://doi.pangaea.de/10.1594/PANGAEA.785501" target="_blank">PANGAEA 785501</a>
+        <a href="https://www.geotraces.org/" target="_blank">GEOTRACES</a>
+    </div>
+
+    <div class="layer-title">Productive Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/mesozoo_productive_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/mesozoo_productive_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/mesozoo_productive_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/mesozoo_productive_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/mesozoo_productive_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/mesozoo_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Mesozooplankton</div>
@@ -1322,8 +1171,10 @@
 </table>
 </div>
 </div>
+
     </div>
-    <h3>Mesopelagic Layer</h3>
+
+    <div class="layer-title">Mesopelagic Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/mesozoo_meso_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/mesozoo_meso_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/mesozoo_meso_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/mesozoo_meso_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/mesozoo_meso_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/mesozoo_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Mesozooplankton</div>
@@ -1391,13 +1242,13 @@
 </table>
 </div>
 </div>
-    </div>
-  </div>
 
-  <div class="section-group">
-    <h2>CMEMS Observation-based CO₂
-      <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_CARBON_SURFACE_MYNRT_015_008" target="_blank">CMEMS 015_008</a>
-    </h2>
+    </div>
+
+    <div class="section-title">
+        CMEMS Observation-based CO₂
+        <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_CARBON_SURFACE_MYNRT_015_008" target="_blank">CMEMS 015_008</a>
+    </div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="spco2" data-layer="surface" data-surfaceonly="true" data-figs="[[&quot;MEAN map&quot;, &quot;figures/spco2_surface_mean_map.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/spco2_surface_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/spco2_surface_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/spco2_surface_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/spco2_surface_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/spco2_surface_scatter_comparison.png&quot;], [&quot;Timeseries&quot;, &quot;figures/spco2_surface_timeseries.png&quot;]]">
 <div class="table-card-title">spCO₂</div>
@@ -1529,13 +1380,13 @@
 </table>
 </div>
 </div>
-    </div>
-  </div>
 
-  <div class="section-group">
-    <h2>Ocean Color Satellite-derived
-      <a href="https://zenodo.org/records/7849935" target="_blank">Zenodo 7849935</a>
-    </h2>
+    </div>
+
+    <div class="section-title">
+        Ocean Color Satellite-derived
+        <a href="https://zenodo.org/records/7849935" target="_blank">Zenodo 7849935</a>
+    </div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="npp" data-layer="surface" data-surfaceonly="true" data-figs="[[&quot;Timeseries&quot;, &quot;figures/npp_surface_timeseries.png&quot;]]">
 <div class="table-card-title">NPP</div>
@@ -1585,115 +1436,115 @@
 </table>
 </div>
 </div>
-    </div>
-  </div>
 
-</div>
+    </div>
+
+</main>
 
 <div id="overlay" class="overlay"></div>
 <div class="modal" id="modal">
-  <div class="modal-header">
-    <h3 id="modal-title"></h3>
-    <button class="modal-close" id="modal-close">&times;</button>
-  </div>
-  <div class="tab-bar" id="tab-bar"></div>
-  <div class="modal-body" id="tab-panels"></div>
+    <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <button class="modal-close" id="modal-close">&times;</button>
+    </div>
+    <div class="tab-bar" id="tab-bar"></div>
+    <div class="modal-body" id="tab-panels"></div>
 </div>
 
-<div class="footer">
-  <p style="margin: 0; font-weight: 600; color: var(--text-main);">Created by A. Mignot</p>
-  <p style="margin: 5px 0 0;">Generated by Ocean BGC Models Benchmark &mdash; Mercator Ocean International</p>
-</div>
+<footer class="footer">
+    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem; font-size: 0.8rem;">
+        Generated by Ocean BGC Models Benchmark
+    </div>
+    <div style="color: var(--text-muted); font-size: 0.75rem;">
+        Mercator Ocean International &mdash; Created by A. Mignot
+    </div>
+</footer>
 
 <script>
 function closeModal() {
-  document.getElementById('modal').classList.remove('active');
-  document.getElementById('overlay').classList.remove('active');
-  document.body.style.overflow = '';
+    document.getElementById('modal').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
 }
 document.getElementById('overlay').addEventListener('click', closeModal);
 document.getElementById('modal-close').addEventListener('click', closeModal);
 
 document.querySelectorAll('.table-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const title = card.querySelector('.table-card-title').textContent.replace('\u2197', '').trim();
-    document.getElementById('modal-title').textContent = title;
+    card.addEventListener('click', () => {
+        const title = card.querySelector('.table-card-title').textContent.replace('\u2197', '').trim();
+        document.getElementById('modal-title').textContent = title;
+        const tabBar = document.getElementById('tab-bar');
+        const tabPanels = document.getElementById('tab-panels');
+        tabBar.innerHTML = '';
+        tabPanels.innerHTML = '';
 
-    const tabBar = document.getElementById('tab-bar');
-    const tabPanels = document.getElementById('tab-panels');
-    tabBar.innerHTML = '';
-    tabPanels.innerHTML = '';
+        const figsAttr = card.dataset.figs;
+        if (!figsAttr) {
+            tabPanels.innerHTML = '<div style="text-align:center; padding: 60px; color: var(--text-muted); font-weight: 500;">No visual data available for this metric.</div>';
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            return;
+        }
+        const figs = JSON.parse(figsAttr);
+        const maps = figs.filter(f => f[0].toLowerCase().includes('map'));
+        const scatters = figs.filter(f => f[0].startsWith('Scatter'));
+        const timeseries = figs.filter(f => f[0] === 'Timeseries');
+        const tabs = [];
 
-    const figsAttr = card.dataset.figs;
-    if (!figsAttr) { 
-        tabPanels.innerHTML = '<div style="text-align:center; padding: 60px; color: var(--text-muted); font-size: 16px;">No visual data available for this metric.</div>';
+        if (maps.length > 0) {
+            let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
+            maps.forEach(([label, src]) => {
+                html += '<div><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
+            });
+            html += '</div>';
+            tabs.push({ id: 'maps', label: 'Maps', html: html });
+        }
+
+        if (scatters.length > 0) {
+            let html = '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 30px;">';
+            scatters.forEach(([label, src]) => {
+                const gridCol = label.includes('comparison') ? 'grid-column: 1 / -1;' : '';
+                html += '<div style="' + gridCol + '"><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
+            });
+            html += '</div>';
+            tabs.push({ id: 'scatter', label: 'Scatter Plots', html: html });
+        }
+
+        if (timeseries.length > 0) {
+            let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
+            timeseries.forEach(([label, src]) => {
+                html += '<div><div class="plot-title">' + label + '</div><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
+            });
+            html += '</div>';
+            tabs.push({ id: 'timeseries', label: 'Timeseries', html: html });
+        }
+
+        if (tabs.length === 0) return;
+
+        tabs.forEach((tab, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+            btn.textContent = tab.label;
+            btn.dataset.tabid = tab.id;
+            btn.addEventListener('click', (e) => {
+                tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                tabPanels.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById('tab-' + tab.id).classList.add('active');
+            });
+            tabBar.appendChild(btn);
+            const panel = document.createElement('div');
+            panel.id = 'tab-' + tab.id;
+            panel.className = 'tab-content' + (i === 0 ? ' active' : '');
+            panel.innerHTML = tab.html;
+            tabPanels.appendChild(panel);
+        });
+
         document.getElementById('modal').classList.add('active');
         document.getElementById('overlay').classList.add('active');
         document.body.style.overflow = 'hidden';
-        return; 
-    }
-    const figs = JSON.parse(figsAttr);
-
-    const maps = figs.filter(f => f[0].toLowerCase().includes('map'));
-    const scatters = figs.filter(f => f[0].startsWith('Scatter'));
-    const timeseries = figs.filter(f => f[0] === 'Timeseries');
-
-    const tabs = [];
-
-    if (maps.length > 0) {
-      let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
-      maps.forEach(([label, src]) => {
-        html += '<div><p class="plot-title">' + label + '</p><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-      });
-      html += '</div>';
-      tabs.push({ id: 'maps', label: 'Maps', html: html });
-    }
-
-    if (scatters.length > 0) {
-      let html = '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 30px;">';
-      scatters.forEach(([label, src]) => {
-        const gridCol = label.includes('comparison') ? 'grid-column: 1 / -1;' : '';
-        html += '<div style="' + gridCol + '"><p class="plot-title">' + label + '</p><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-      });
-      html += '</div>';
-      tabs.push({ id: 'scatter', label: 'Scatter Plots', html: html });
-    }
-
-    if (timeseries.length > 0) {
-      let html = '<div style="display:flex; flex-direction: column; gap: 40px;">';
-      timeseries.forEach(([label, src]) => {
-        html += '<div><p class="plot-title">' + label + '</p><img src="' + src + '" style="width:100%; height:auto; display:block;"></div>';
-      });
-      html += '</div>';
-      tabs.push({ id: 'timeseries', label: 'Timeseries', html: html });
-    }
-
-    if (tabs.length === 0) { return; }
-
-    tabs.forEach((tab, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
-      btn.textContent = tab.label;
-      btn.dataset.tabid = tab.id;
-      btn.addEventListener('click', (e) => {
-        tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        tabPanels.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
-        e.target.classList.add('active');
-        document.getElementById('tab-' + tab.id).classList.add('active');
-      });
-      tabBar.appendChild(btn);
-
-      const panel = document.createElement('div');
-      panel.id = 'tab-' + tab.id;
-      panel.className = 'tab-content' + (i === 0 ? ' active' : '');
-      panel.innerHTML = tab.html;
-      tabPanels.appendChild(panel);
     });
-
-    document.getElementById('modal').classList.add('active');
-    document.getElementById('overlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
 });
 </script>
 </body>

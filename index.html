@@ -39,7 +39,7 @@
         .section-title { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
         .section-title a { font-size: 0.8rem; background: rgba(255,255,255,0.05); color: var(--text-main); padding: 0.2rem 0.6rem; border-radius: 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border); transition: all var(--transition); }
         .section-title a:hover { background: rgba(26, 192, 198, 0.1); color: var(--accent); border-color: rgba(26, 192, 198, 0.3); }
-        .layer-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 8px; }
+        .layer-title { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 8px; }
         .layer-title::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
         .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
         .table-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; cursor: pointer; transition: all var(--transition); overflow: hidden; position: relative; }
@@ -71,7 +71,8 @@
         .modal-header h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-dark); }
         .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); font-family: var(--font); line-height: 1; transition: color var(--transition); }
         .modal-close:hover { color: var(--accent); }
-        .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; flex-shrink: 0; z-index: 10; position: relative; }
+        .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; flex-shrink: 0; z-index: 10; position: relative; min-height: 48px; align-items: stretch; }
+        .tab-bar:empty { display: none; }
         .tab-bar::-webkit-scrollbar { display: none; }
         .tab-btn { padding: 0.75rem 1.25rem; cursor: pointer; border: none; background: transparent; font-size: 0.75rem; font-weight: 700; color: var(--text-main); border-bottom: 2px solid transparent; transition: all var(--transition); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
         .tab-btn:hover { color: var(--text-dark); }

@@ -50,7 +50,7 @@
         .table-container { overflow-x: auto; flex-grow: 1; scrollbar-width: thin; scrollbar-color: var(--text-light) transparent; }
         .table-container::-webkit-scrollbar { height: 4px; }
         .table-container::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 2px; }
-        table { width: 100%; border-collapse: collapse; min-width: max-content; }
+        table { width: 100%; border-collapse: collapse; min-width: max-content; white-space: nowrap; }
         th { padding: 0.75rem 1.25rem; text-align: right; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); }
         th:first-child, th:nth-child(2) { text-align: left; }
         td { padding: 0.8rem 1.25rem; text-align: right; font-size: 0.9rem; color: var(--text-main); border-bottom: 1px solid var(--border-light); }
@@ -1292,7 +1292,7 @@
 <tr><td class="var-name">Trend</td>
 <td style="font-size:11px;color:#718096;">µatm yr⁻¹</td>
 <td>1.189</td>
-<td>1.892</td>
+<td><b>1.892</b></td>
 <td><b>2.122</b></td>
 </tr>
 </table>
@@ -1374,7 +1374,7 @@
 <tr><td class="var-name">Trend</td>
 <td style="font-size:11px;color:#718096;">PgC yr⁻¹ dec⁻¹</td>
 <td>-1.910</td>
-<td>-0.859</td>
+<td><b>-0.859</b></td>
 <td><b>-0.139</b></td>
 </tr>
 </table>
@@ -1430,7 +1430,7 @@
 <tr><td class="var-name">Trend</td>
 <td style="font-size:11px;color:#718096;">mg C m⁻² d⁻¹ yr⁻¹</td>
 <td>0.565</td>
-<td>0.547</td>
+<td><b>0.547</b></td>
 <td><b>-0.751</b></td>
 </tr>
 </table>
@@ -1488,7 +1488,7 @@ document.querySelectorAll('.table-card').forEach(card => {
         }
         const figs = JSON.parse(figsAttr);
         const maps = figs.filter(f => f[0].toLowerCase().includes('map'));
-        const scatters = figs.filter(f => f[0].startsWith('Scatter'));
+        const scatters = figs.filter(f => f[0].toLowerCase().startsWith('scatter'));
         const timeseries = figs.filter(f => f[0] === 'Timeseries');
         const tabs = [];
 
@@ -1549,3 +1549,4 @@ document.querySelectorAll('.table-card').forEach(card => {
 </script>
 </body>
 </html>
+

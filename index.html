@@ -4,162 +4,243 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ocean BGC Models Benchmark</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --primary: #0f172a;
+    --primary-light: #1e293b;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --winner-bg: #eff6ff;
+    --winner-text: #1d4ed8;
+  }
+
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     margin: 0; padding: 0;
-    background: #f5f7fa;
-    color: #333;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
+
   .header {
-    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    background: var(--primary);
     color: white;
-    padding: 30px 40px;
+    padding: 40px 5vw;
+    border-bottom: 4px solid var(--accent);
   }
-  .header h1 { margin: 0; font-size: 28px; }
-  .header p { margin: 5px 0 0; opacity: 0.85; font-size: 14px; }
-  .container { max-width: 1800px; margin: 0 auto; padding: 15px 30px; }
-  h2 { color: #1a365d; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; font-size: 18px; }
+  .header h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px; }
+  .header p { margin: 10px 0 0; color: #94a3b8; font-size: 16px; font-weight: 400; }
+
+  .container { max-width: 1600px; margin: 0 auto; padding: 40px 5vw; }
+  
+  .section-group { margin-bottom: 60px; background: #fff; padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  h2 { 
+    color: var(--primary); 
+    font-size: 22px; 
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  h2 a {
+    font-size: 14px;
+    background: var(--bg-main);
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  h2 a:hover { background: var(--winner-bg); border-color: var(--accent); }
+  
+  h3 { color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 30px 0 15px; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  
+  .intro-text { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; }
+  .intro-text a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
   .tables-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
   }
+  
   .table-card {
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    overflow-x: auto;
-    scrollbar-width: thin;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
   }
-  .table-card::-webkit-scrollbar {
-    height: 4px;
+  
+  .table-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 12px 20px -5px rgba(0,0,0,0.1); 
+    border-color: #cbd5e0;
   }
-  .table-card::-webkit-scrollbar-thumb {
-    background: #cbd5e0;
-    border-radius: 2px;
-  }
+  
   .table-card-title {
     margin: 0;
-    padding: 6px 10px;
-    background: #2c5282;
-    color: white;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .table-card-title::after {
+    content: "\2197";
+    color: #94a3b8;
+    font-weight: 400;
+    font-size: 18px;
+    transition: color 0.2s;
+  }
+  .table-card:hover .table-card-title::after { color: var(--accent); }
+
+  .table-container { overflow-x: auto; flex-grow: 1; }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); }
+  
+  th {
+    background: var(--bg-main);
+    color: var(--text-muted);
+    padding: 12px 16px;
+    text-align: right;
     font-size: 11px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
   }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: max-content;
-    background: white;
-  }
-  th {
-    background: #edf2f7;
-    color: #2c5282;
-    padding: 4px 6px;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 600;
-  }
+  th:first-child, th:nth-child(2) { text-align: left; }
+  
   td {
-    padding: 3px 6px;
-    text-align: center;
-    border-bottom: 1px solid #edf2f7;
-    font-size: 10px;
+    padding: 12px 16px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-main);
   }
+  tr:last-child td { border-bottom: none; }
+  
   td.var-name {
     text-align: left;
     font-weight: 600;
-    background: #f7fafc;
-    white-space: nowrap;
-    font-size: 10px;
+    color: var(--primary);
+    width: 35%;
   }
-  .na { background: #e2e8f0; color: #a0aec0; }
-  .table-card { cursor: pointer; transition: transform 0.2s; }
-  .table-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-  .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.5); z-index:999; }
-  .overlay.active { display:block; }
+  td:nth-child(2) { text-align: left; color: #94a3b8; font-size: 11px; }
+
+  .table-card td[style] {
+    background: transparent !important;
+    color: var(--text-main) !important;
+  }
+  .table-card td b {
+    background-color: var(--winner-bg);
+    color: var(--winner-text);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+    border: 1px solid #bfdbfe;
+  }
+
+  .na { color: #cbd5e0 !important; font-style: italic; }
+
+  .overlay { 
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 999; 
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .overlay.active { display: block; opacity: 1; }
+  
   .modal {
-    display:none; position:fixed; top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    z-index:1001; background:white; border-radius:10px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.3);
-    width:90vw; max-width:1400px; max-height:85vh;
-    overflow-y:auto; padding:0;
+    display: none; position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -48%);
+    z-index: 1001; background: var(--card-bg); border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    width: 90vw; max-width: 1200px; max-height: 85vh;
+    overflow: hidden; flex-direction: column;
+    opacity: 0; transition: all 0.3s ease;
   }
-  .modal.active { display:block; }
+  .modal.active { display: flex; transform: translate(-50%, -50%); opacity: 1; }
+  
   .modal-header {
-    background:#2c5282; color:white; padding:12px 20px;
-    border-radius:10px 10px 0 0;
-    display:flex; justify-content:space-between; align-items:center;
+    background: var(--primary); color: white; padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  .modal-header h3 { margin:0; font-size:16px; }
-  .modal-close { cursor:pointer; font-size:20px; color:white; background:none; border:none; }
+  .modal-header h3 { margin: 0; font-size: 18px; color: white; border: none; padding: 0; letter-spacing: normal; text-transform: none; }
+  .modal-close { cursor: pointer; font-size: 28px; color: #cbd5e0; background: none; border: none; line-height: 1; transition: color 0.2s; }
+  .modal-close:hover { color: white; }
+  
   .tab-bar {
-    display:flex; gap:0; border-bottom:2px solid #e2e8f0;
-    background:#f7fafc; padding:0 20px;
+    display: flex; gap: 20px; border-bottom: 1px solid var(--border);
+    background: var(--bg-main); padding: 0 24px;
   }
   .tab-btn {
-    padding:8px 16px; cursor:pointer; border:none;
-    background:transparent; font-size:12px; font-weight:600;
-    color:#718096; border-bottom:2px solid transparent;
-    margin-bottom:-2px;
+    padding: 16px 4px; cursor: pointer; border: none;
+    background: transparent; font-size: 14px; font-weight: 600;
+    color: var(--text-muted); border-bottom: 3px solid transparent;
+    transition: all 0.2s;
   }
-  .tab-btn.active { color:#2c5282; border-bottom-color:#2c5282; }
-  .tab-content { display:none; padding:15px 20px; }
-  .tab-content.active { display:block; }
-  .tab-content img { max-width:100%; height:auto; border-radius:4px; margin:8px 0; }
-  .fig-panels { display: none; }  /* hidden, loaded via JS modal */
-  .figures-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-  .fig-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-  .fig-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .fig-card .caption {
-    padding: 10px 16px;
-    font-size: 12px;
-    color: #718096;
-    text-align: center;
-  }
-  .footer {
-    text-align: center;
-    padding: 20px;
-    color: #a0aec0;
-    font-size: 12px;
+  .tab-btn:hover { color: var(--primary); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  
+  .modal-body { overflow-y: auto; padding: 24px; background: var(--bg-main); flex-grow: 1; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .tab-content p { color: var(--primary); font-weight: 600; margin-bottom: 8px; }
+  .tab-content img { border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); background: white; }
+
+  .site-footer {
+    text-align: center; padding: 40px 20px; background: var(--primary); color: #94a3b8; font-size: 14px; margin-top: 60px;
   }
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>Ocean BGC Models Benchmark</h1>
-  <p>BGC Model Benchmarking against In-situ and Satellite Observations — Period: 2008–2024</p>
+  <p>Performance Evaluation against In-situ and Satellite Observations (2008–2024)</p>
 </div>
+
 <div class="container">
 
-<h2>Summary Scorecard</h2>
-<p>Metrics computed over 2008–2024.</p>
-
-<p style="margin-bottom: 15px;">Models: <a href="https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_BGC_001_029" target="_blank" style="color: #2c5282; font-weight: 600;">FREEBIORYS (CMEMS 001_029)</a> · <a href="https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_BGC_001_028/description" target="_blank" style="color: #2c5282; font-weight: 600;">BIOMER4 (CMEMS 001_028)</a></p>
-
-<h2>BGC-Argo based — <a href="https://www.seanoe.org/data/00765/102324/" target="_blank" style="color: #2c5282;">SEANOE 102324</a> · <a href="https://www.seanoe.org/data/00311/42182/" target="_blank" style="color: #2c5282;">SEANOE 42182</a> · <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BGC_NUTRIENTS_CARBON_PROFILES_MYNRT_015_009" target="_blank" style="color: #2c5282;">CMEMS 015_009</a></h2>
-<h3 style="color: #2c5282; font-size: 15px; margin: 10px 0 5px;">Productive layer</h3>
-<div class="tables-grid">
+  <p class="intro-text">
+    <strong>Models Evaluated:</strong> 
+    <a href="https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_BGC_001_029" target="_blank">FREEBIORYS (CMEMS 001_029)</a> &mdash; 
+    <a href="https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_BGC_001_028/description" target="_blank">BIOMER4 (CMEMS 001_028)</a>
+  </p>
+  <div class="section-group">
+    <h2>BGC-Argo Based Observations
+      <a href="https://www.seanoe.org/data/00765/102324/" target="_blank">SEANOE 102324</a>
+      <a href="https://www.seanoe.org/data/00311/42182/" target="_blank">SEANOE 42182</a>
+      <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BGC_NUTRIENTS_CARBON_PROFILES_MYNRT_015_009" target="_blank">CMEMS 015_009</a>
+    </h2>
+    <h3>Productive Layer</h3>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Chlorophyll a</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -192,8 +273,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/nitrate_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitrate</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -226,8 +309,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate_canyon" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_canyon_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_canyon_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_canyon_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_canyon_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/nitrate_canyon_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_canyon_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitrate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -260,8 +345,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="phosphate" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/phosphate_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/phosphate_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/phosphate_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/phosphate_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/phosphate_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/phosphate_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Phosphate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -294,8 +381,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="silicate" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/silicate_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/silicate_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/silicate_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/silicate_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/silicate_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/silicate_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Silicate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -328,8 +417,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="oxygen" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/oxygen_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/oxygen_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/oxygen_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/oxygen_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/oxygen_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/oxygen_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Oxygen</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -362,8 +453,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="dic" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/dic_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/dic_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/dic_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/dic_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/dic_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/dic_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">DIC (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -390,8 +483,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="alk" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/alk_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/alk_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/alk_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/alk_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/alk_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/alk_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Alkalinity (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -418,8 +513,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="ph_insitu" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/ph_insitu_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/ph_insitu_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/ph_insitu_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/ph_insitu_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/ph_insitu_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/ph_insitu_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">pH</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -452,8 +549,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="ph_content" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/ph_content_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/ph_content_productive_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/ph_content_productive_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/ph_content_productive_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/ph_content_productive_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/ph_content_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">pH (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -486,8 +585,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="poc_small" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/poc_small_productive_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/poc_small_productive_bias_map_comparison.png&quot;], [&quot;R2 map&quot;, &quot;figures/poc_small_productive_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/poc_small_productive_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/poc_small_productive_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/poc_small_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">POC small</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -515,10 +616,12 @@
 </table>
 </div>
 </div>
-<h3 style="color: #2c5282; font-size: 15px; margin: 10px 0 5px;">Mesopelagic layer</h3>
-<div class="tables-grid">
+    </div>
+    <h3>Mesopelagic Layer</h3>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Chlorophyll a</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -551,8 +654,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/nitrate_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitrate</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -585,8 +690,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate_canyon" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_canyon_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_canyon_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_canyon_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_canyon_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/nitrate_canyon_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_canyon_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitrate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -619,8 +726,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="phosphate" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/phosphate_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/phosphate_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/phosphate_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/phosphate_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/phosphate_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/phosphate_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Phosphate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -653,8 +762,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="silicate" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/silicate_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/silicate_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/silicate_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/silicate_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/silicate_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/silicate_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Silicate (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -687,8 +798,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="oxygen" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/oxygen_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/oxygen_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/oxygen_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/oxygen_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/oxygen_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/oxygen_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Oxygen</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -721,8 +834,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="dic" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/dic_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/dic_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/dic_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/dic_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/dic_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/dic_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">DIC (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -749,8 +864,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="alk" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/alk_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/alk_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/alk_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/alk_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/alk_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/alk_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Alkalinity (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -777,8 +894,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="ph_insitu" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/ph_insitu_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/ph_insitu_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/ph_insitu_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/ph_insitu_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/ph_insitu_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/ph_insitu_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">pH</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -811,8 +930,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="ph_content" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/ph_content_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/ph_content_meso_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/ph_content_meso_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/ph_content_meso_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/ph_content_meso_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/ph_content_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">pH (CONTENT)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -845,8 +966,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="poc_small" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/poc_small_meso_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/poc_small_meso_bias_map_comparison.png&quot;], [&quot;R2 map&quot;, &quot;figures/poc_small_meso_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/poc_small_meso_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/poc_small_meso_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/poc_small_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">POC small</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -874,10 +997,12 @@
 </table>
 </div>
 </div>
-<h3 style="color: #2c5282; font-size: 15px; margin: 10px 0 5px;">Emergent properties</h3>
-<div class="tables-grid">
+    </div>
+    <h3>Emergent Properties</h3>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="dcm_depth" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_dcm_depth_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_dcm_depth_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_dcm_depth_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_dcm_depth_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_dcm_depth_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_dcm_depth_scatter_comparison.png&quot;]]">
 <div class="table-card-title">DCM depth</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -910,8 +1035,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="chla" data-layer="dcm_value" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/chla_dcm_value_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/chla_dcm_value_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/chla_dcm_value_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/chla_dcm_value_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/chla_dcm_value_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/chla_dcm_value_scatter_comparison.png&quot;]]">
 <div class="table-card-title">DCM intensity</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -944,8 +1071,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate" data-layer="nitracline" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_nitracline_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_nitracline_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_nitracline_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_nitracline_rmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_nitracline_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitracline depth</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -978,8 +1107,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="nitrate_canyon" data-layer="nitracline" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/nitrate_canyon_nitracline_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/nitrate_canyon_nitracline_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/nitrate_canyon_nitracline_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/nitrate_canyon_nitracline_rmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/nitrate_canyon_nitracline_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Nitracline depth (CANYON-B)</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1012,8 +1143,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="oxygen" data-layer="o2min_depth" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/oxygen_o2min_depth_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/oxygen_o2min_depth_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/oxygen_o2min_depth_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/oxygen_o2min_depth_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/oxygen_o2min_depth_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/oxygen_o2min_depth_scatter_comparison.png&quot;]]">
 <div class="table-card-title">O₂ min depth</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1046,8 +1179,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="oxygen" data-layer="o2min_value" data-surfaceonly="false" data-figs="[[&quot;MEAN map (comparison)&quot;, &quot;figures/oxygen_o2min_value_mean_map_comparison.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/oxygen_o2min_value_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/oxygen_o2min_value_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/oxygen_o2min_value_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/oxygen_o2min_value_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/oxygen_o2min_value_scatter_comparison.png&quot;]]">
 <div class="table-card-title">O₂ min value</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1081,12 +1216,19 @@
 </table>
 </div>
 </div>
+    </div>
+  </div>
 
-<h2>In-situ climatology / database — <a href="https://doi.pangaea.de/10.1594/PANGAEA.785501" target="_blank" style="color: #2c5282;">PANGAEA 785501</a> · <a href="https://www.geotraces.org/" target="_blank" style="color: #2c5282;">GEOTRACES</a></h2>
-<h3 style="color: #2c5282; font-size: 15px; margin: 10px 0 5px;">Productive layer</h3>
-<div class="tables-grid">
+  <div class="section-group">
+    <h2>In-situ Climatology / Database
+      <a href="https://doi.pangaea.de/10.1594/PANGAEA.785501" target="_blank">PANGAEA 785501</a>
+      <a href="https://www.geotraces.org/" target="_blank">GEOTRACES</a>
+    </h2>
+    <h3>Productive Layer</h3>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/mesozoo_productive_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/mesozoo_productive_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/mesozoo_productive_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/mesozoo_productive_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/mesozoo_productive_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/mesozoo_productive_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Mesozooplankton</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1125,8 +1267,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="iron" data-layer="productive" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/iron_productive_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/iron_productive_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/iron_productive_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/iron_productive_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/iron_productive_nrmsd_map.png&quot;]]">
 <div class="table-card-title">Dissolved Iron</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 </tr>
@@ -1148,10 +1292,12 @@
 </table>
 </div>
 </div>
-<h3 style="color: #2c5282; font-size: 15px; margin: 10px 0 5px;">Mesopelagic layer</h3>
-<div class="tables-grid">
+    </div>
+    <h3>Mesopelagic Layer</h3>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/mesozoo_meso_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/mesozoo_meso_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/mesozoo_meso_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/mesozoo_meso_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/mesozoo_meso_nrmsd_map.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/mesozoo_meso_scatter_comparison.png&quot;]]">
 <div class="table-card-title">Mesozooplankton</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1190,8 +1336,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="iron" data-layer="meso" data-surfaceonly="false" data-figs="[[&quot;MEAN map&quot;, &quot;figures/iron_meso_mean_map.png&quot;], [&quot;BIAS map&quot;, &quot;figures/iron_meso_bias_map.png&quot;], [&quot;R2 map&quot;, &quot;figures/iron_meso_r2_map.png&quot;], [&quot;RMSD map&quot;, &quot;figures/iron_meso_rmsd_map.png&quot;], [&quot;NRMSD map&quot;, &quot;figures/iron_meso_nrmsd_map.png&quot;]]">
 <div class="table-card-title">Dissolved Iron</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 </tr>
@@ -1213,11 +1361,17 @@
 </table>
 </div>
 </div>
+    </div>
+  </div>
 
-<h2>CMEMS Observation-based CO₂ product — <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_CARBON_SURFACE_MYNRT_015_008" target="_blank" style="color: #2c5282;">CMEMS 015_008</a></h2>
-<div class="tables-grid">
+  <div class="section-group">
+    <h2>CMEMS Observation-based CO₂
+      <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_CARBON_SURFACE_MYNRT_015_008" target="_blank">CMEMS 015_008</a>
+    </h2>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="spco2" data-layer="surface" data-surfaceonly="true" data-figs="[[&quot;MEAN map&quot;, &quot;figures/spco2_surface_mean_map.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/spco2_surface_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/spco2_surface_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/spco2_surface_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/spco2_surface_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/spco2_surface_scatter_comparison.png&quot;], [&quot;Timeseries&quot;, &quot;figures/spco2_surface_timeseries.png&quot;]]">
 <div class="table-card-title">spCO₂</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1262,8 +1416,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="surface_ph" data-layer="surface" data-surfaceonly="true">
 <div class="table-card-title">Surface pH</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>Obs</th>
@@ -1294,8 +1450,10 @@
 </tr>
 </table>
 </div>
+</div>
 <div class="table-card" data-varkey="fgco2" data-layer="surface" data-surfaceonly="true" data-figs="[[&quot;MEAN map&quot;, &quot;figures/fgco2_surface_mean_map.png&quot;], [&quot;BIAS map (comparison)&quot;, &quot;figures/fgco2_surface_bias_map_comparison.png&quot;], [&quot;R2 map (comparison)&quot;, &quot;figures/fgco2_surface_r2_map_comparison.png&quot;], [&quot;RMSD map (comparison)&quot;, &quot;figures/fgco2_surface_rmsd_map_comparison.png&quot;], [&quot;NRMSD map (comparison)&quot;, &quot;figures/fgco2_surface_nrmsd_map_comparison.png&quot;], [&quot;Scatter (comparison)&quot;, &quot;figures/fgco2_surface_scatter_comparison.png&quot;], [&quot;Timeseries&quot;, &quot;figures/fgco2_surface_timeseries.png&quot;]]">
 <div class="table-card-title">Air-sea CO₂ flux</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1341,11 +1499,17 @@
 </table>
 </div>
 </div>
+    </div>
+  </div>
 
-<h2>Ocean Color satellite-derived — <a href="https://zenodo.org/records/7849935" target="_blank" style="color: #2c5282;">Zenodo 7849935</a></h2>
-<div class="tables-grid">
+  <div class="section-group">
+    <h2>Ocean Color Satellite-derived
+      <a href="https://zenodo.org/records/7849935" target="_blank">Zenodo 7849935</a>
+    </h2>
+    <div class="tables-grid">
 <div class="table-card" data-varkey="npp" data-layer="surface" data-surfaceonly="true" data-figs="[[&quot;Timeseries&quot;, &quot;figures/npp_surface_timeseries.png&quot;]]">
 <div class="table-card-title">NPP</div>
+<div class="table-container">
 <table>
 <tr><th>Metric</th><th>Units</th>
 <th>BIOMER4</th>
@@ -1391,16 +1555,26 @@
 </table>
 </div>
 </div>
+    </div>
+  </div>
 
 </div>
+
+<div id="overlay" class="overlay"></div>
 <div class="modal" id="modal">
   <div class="modal-header">
     <h3 id="modal-title"></h3>
     <button class="modal-close" id="modal-close">&times;</button>
   </div>
   <div class="tab-bar" id="tab-bar"></div>
-  <div id="tab-panels"></div>
+  <div class="modal-body" id="tab-panels"></div>
 </div>
+
+<div class="site-footer">
+  <p style="margin: 0; font-weight: 600;">Created by A. Mignot</p>
+  <p style="margin: 5px 0 0;">Generated by Ocean BGC Models Benchmark &mdash; Mercator Ocean International</p>
+</div>
+
 <script>
 function closeModal() {
   document.getElementById('modal').classList.remove('active');
@@ -1412,7 +1586,7 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 
 document.querySelectorAll('.table-card').forEach(card => {
   card.addEventListener('click', () => {
-    const title = card.querySelector('.table-card-title').textContent;
+    const title = card.querySelector('.table-card-title').textContent.replace('\u2197', '').trim();
     document.getElementById('modal-title').textContent = title;
 
     const tabBar = document.getElementById('tab-bar');
@@ -1420,12 +1594,16 @@ document.querySelectorAll('.table-card').forEach(card => {
     tabBar.innerHTML = '';
     tabPanels.innerHTML = '';
 
-    // Read figure data from data attribute
     const figsAttr = card.dataset.figs;
-    if (!figsAttr) { return; }
+    if (!figsAttr) { 
+        tabPanels.innerHTML = '<div style="text-align:center; padding: 40px; color: #64748b;">No visual data available for this metric.</div>';
+        document.getElementById('modal').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return; 
+    }
     const figs = JSON.parse(figsAttr);
 
-    // Group figures by type
     const maps = figs.filter(f => f[0].includes('map'));
     const scatters = figs.filter(f => f[0].startsWith('Scatter'));
     const timeseries = figs.filter(f => f[0] === 'Timeseries');
@@ -1433,32 +1611,31 @@ document.querySelectorAll('.table-card').forEach(card => {
     const tabs = [];
 
     if (maps.length > 0) {
-      let html = '';
-      maps.forEach(([label, b64]) => {
-        html += '<p><strong>' + label + '</strong></p><img src="' + b64 + '" style="max-width:100%;margin:4px 0">';
+      let html = '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">';
+      maps.forEach(([label, src]) => {
+        html += '<div><p>' + label + '</p><img src="' + src + '" style="width:100%; height:auto;"></div>';
       });
+      html += '</div>';
       tabs.push({ id: 'maps', label: 'Maps', html: html });
     }
 
     if (scatters.length > 0) {
-      let html = '';
-      scatters.forEach(([label, b64]) => {
+      let html = '<div style="display:flex; flex-wrap: wrap; gap: 20px;">';
+      scatters.forEach(([label, src]) => {
         const isComparison = label.includes('comparison');
-        const style = isComparison
-          ? 'max-width:100%;margin:4px 0'
-          : 'max-width:48%;display:inline-block;margin:4px';
-        html += (isComparison ? '<p><strong>' + label + '</strong></p>' : '')
-              + '<img src="' + b64 + '" style="' + style + '">';
+        const flexBasis = isComparison ? '100%' : 'calc(50% - 10px)';
+        html += '<div style="flex: 1 1 ' + flexBasis + ';"><p>' + label + '</p><img src="' + src + '" style="width:100%; height:auto;"></div>';
       });
+      html += '</div>';
       tabs.push({ id: 'scatter', label: 'Scatter Plots', html: html });
     }
 
     if (timeseries.length > 0) {
       let html = '';
-      timeseries.forEach(([label, b64]) => {
-        html += '<img src="' + b64 + '" style="max-width:100%;margin:4px 0">';
+      timeseries.forEach(([label, src]) => {
+        html += '<p>' + label + '</p><img src="' + src + '" style="width:100%; height:auto; margin-bottom: 20px;">';
       });
-      tabs.push({ id: 'timeseries', label: 'Timeseries & Trends', html: html });
+      tabs.push({ id: 'timeseries', label: 'Timeseries', html: html });
     }
 
     if (tabs.length === 0) { return; }
@@ -1489,9 +1666,5 @@ document.querySelectorAll('.table-card').forEach(card => {
   });
 });
 </script>
-<footer style="background: #1a365d; color: white; text-align: center; padding: 20px 40px; margin-top: 30px; font-size: 13px; opacity: 0.9;">
-  <p style="margin: 0;">Created by A. Mignot</p>
-  <p style="margin: 5px 0 0;">Generated by Ocean BGC Models Benchmark &mdash; Mercator Ocean International</p>
-</footer>
 </body>
 </html>

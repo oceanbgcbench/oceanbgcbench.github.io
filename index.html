@@ -1493,23 +1493,67 @@ document.querySelectorAll('.table-card').forEach(function(card) {
             }
 
             var figs = JSON.parse(figsRaw);
-            var html = '<div style="display:flex; flex-direction:column; gap:40px;">';
-
+            var maps = [];
+            var scatters = [];
+            var timeseries = [];
             for (var i = 0; i < figs.length; i++) {
-                var label = figs[i][0];
-                var src = figs[i][1];
-                html += '<div>';
-                html += '<div class="plot-title">' + label + '</div>';
-                html += '<img src="' + src + '" style="width:100%; height:auto; display:block;">';
-                html += '</div>';
+                var lbl = figs[i][0].toLowerCase();
+                if (lbl.indexOf('map') >= 0) maps.push(figs[i]);
+                else if (lbl.indexOf('scatter') >= 0) scatters.push(figs[i]);
+                else if (lbl === 'timeseries') timeseries.push(figs[i]);
+                else maps.push(figs[i]);
             }
 
-            html += '</div>';
+            var tabs = [];
+            if (maps.length > 0) {
+                var h = '<div style="display:flex; flex-direction:column; gap:40px;">';
+                for (var i = 0; i < maps.length; i++) {
+                    h += '<div><div class="plot-title">' + maps[i][0] + '</div><img src="' + maps[i][1] + '" style="width:100%; height:auto; display:block;"></div>';
+                }
+                h += '</div>';
+                tabs.push({id: 'maps', label: 'Maps', html: h});
+            }
+            if (scatters.length > 0) {
+                var h = '<div style="display:flex; flex-direction:column; gap:40px;">';
+                for (var i = 0; i < scatters.length; i++) {
+                    h += '<div><div class="plot-title">' + scatters[i][0] + '</div><img src="' + scatters[i][1] + '" style="width:100%; height:auto; display:block;"></div>';
+                }
+                h += '</div>';
+                tabs.push({id: 'scatter', label: 'Scatter Plots', html: h});
+            }
+            if (timeseries.length > 0) {
+                var h = '<div style="display:flex; flex-direction:column; gap:40px;">';
+                for (var i = 0; i < timeseries.length; i++) {
+                    h += '<div><div class="plot-title">' + timeseries[i][0] + '</div><img src="' + timeseries[i][1] + '" style="width:100%; height:auto; display:block;"></div>';
+                }
+                h += '</div>';
+                tabs.push({id: 'timeseries', label: 'Timeseries', html: h});
+            }
 
-            var panel = document.createElement('div');
-            panel.className = 'tab-content active';
-            panel.innerHTML = html;
-            tabPanels.appendChild(panel);
+            if (tabs.length === 0) return;
+
+            for (var i = 0; i < tabs.length; i++) {
+                var tab = tabs[i];
+                var btn = document.createElement('button');
+                btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+                btn.textContent = tab.label;
+                btn.setAttribute('data-tabid', tab.id);
+                btn.addEventListener('click', function(e) {
+                    var btns = tabBar.querySelectorAll('.tab-btn');
+                    var panels = tabPanels.querySelectorAll('.tab-content');
+                    for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+                    for (var j = 0; j < panels.length; j++) panels[j].classList.remove('active');
+                    e.target.classList.add('active');
+                    document.getElementById('tab-' + e.target.getAttribute('data-tabid')).classList.add('active');
+                });
+                tabBar.appendChild(btn);
+
+                var panel = document.createElement('div');
+                panel.id = 'tab-' + tab.id;
+                panel.className = 'tab-content' + (i === 0 ? ' active' : '');
+                panel.innerHTML = tab.html;
+                tabPanels.appendChild(panel);
+            }
 
             document.getElementById('modal').classList.add('active');
             document.getElementById('overlay').classList.add('active');

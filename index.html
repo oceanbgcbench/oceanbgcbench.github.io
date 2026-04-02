@@ -426,15 +426,34 @@
             padding: 1.05rem 1.2rem 1rem;
             border-bottom: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 0.7rem;
             align-items: center;
             background: rgba(255,255,255,0.02);
+        }
+        .table-card-title-label {
+            min-width: 0;
+        }
+        .best-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(59, 208, 205, 0.28);
+            background: rgba(59, 208, 205, 0.10);
+            color: var(--accent-hover);
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
         }
         .table-card-title::after {
             content: "\2197";
             color: var(--accent-warm);
             font-weight: 400;
             font-size: 1.1rem;
+            margin-left: auto;
             transition: color var(--transition), transform var(--transition);
         }
         .table-card:hover .table-card-title::after {
@@ -461,6 +480,11 @@
         td:nth-child(2) { text-align: left; color: var(--text-muted); font-size: 0.7rem; }
         .table-card td[style] { background: transparent !important; color: var(--text-main) !important; }
         .table-card td b { display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--accent); background: rgba(26, 192, 198, 0.1); padding: 0.2rem 0.6rem; border-radius: 20px; border: 1px solid rgba(26, 192, 198, 0.25); letter-spacing: 0.02em; }
+        .best-model-header {
+            color: var(--text-dark);
+            background: rgba(59, 208, 205, 0.10);
+        }
+        tr.index-row { display: none; }
         .na { color: var(--text-light) !important; font-style: italic; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 8, 18, 0.84); backdrop-filter: blur(8px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
         .overlay.active { display: block; opacity: 1; }
@@ -2079,10 +2103,48 @@ document.getElementById('overlay').addEventListener('click', closeModal);
 document.getElementById('modal-close').addEventListener('click', closeModal);
 
 document.querySelectorAll('.table-card').forEach(function(card) {
+    var titleEl = card.querySelector('.table-card-title');
+    if (titleEl && !titleEl.querySelector('.table-card-title-label')) {
+        var rawTitle = titleEl.textContent.trim();
+        titleEl.textContent = '';
+
+        var label = document.createElement('span');
+        label.className = 'table-card-title-label';
+        label.textContent = rawTitle;
+        titleEl.appendChild(label);
+
+        var best = card.getAttribute('data-best');
+        if (best) {
+            var badge = document.createElement('span');
+            badge.className = 'best-badge';
+            badge.textContent = 'Best: ' + best;
+            titleEl.appendChild(badge);
+        }
+    }
+
+    var bestModel = card.getAttribute('data-best');
+    if (bestModel) {
+        card.querySelectorAll('th').forEach(function(th) {
+            if (th.textContent.trim() === bestModel) {
+                th.classList.add('best-model-header');
+            }
+        });
+    }
+
+    card.querySelectorAll('tr').forEach(function(row) {
+        var nameCell = row.querySelector('td.var-name');
+        if (nameCell && nameCell.textContent.trim() === 'Index') {
+            row.classList.add('index-row');
+        }
+    });
+});
+
+document.querySelectorAll('.table-card').forEach(function(card) {
     card.addEventListener('click', function() {
         try {
             var titleEl = card.querySelector('.table-card-title');
-            var title = titleEl.textContent.replace('\u2197', '').trim();
+            var titleLabel = titleEl.querySelector('.table-card-title-label');
+            var title = titleLabel ? titleLabel.textContent.trim() : titleEl.textContent.replace('\u2197', '').trim();
             document.getElementById('modal-title').textContent = title;
 
             var tabBar = document.getElementById('tab-bar');

@@ -5,79 +5,479 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ocean BGC Models Benchmark</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg-main: #061121;
-            --bg-surface: #0d1e36;
-            --bg-night: #030812;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-light: rgba(255, 255, 255, 0.04);
-            --text-dark: #f8fafc;
-            --text-main: #cbd5e1;
-            --text-muted: #8ba0b9;
+            --bg-main: #04111d;
+            --bg-surface: rgba(8, 28, 44, 0.88);
+            --bg-surface-strong: #0a2136;
+            --bg-night: #02070f;
+            --bg-soft: rgba(15, 44, 64, 0.72);
+            --border: rgba(123, 193, 215, 0.16);
+            --border-light: rgba(255, 255, 255, 0.06);
+            --text-dark: #f3fbff;
+            --text-main: #c8d9e8;
+            --text-muted: #88a8bc;
             --text-light: #5c7796;
-            --accent: #1ac0c6;
-            --accent-hover: #00e5ff;
+            --accent: #3bd0cd;
+            --accent-hover: #8afff5;
+            --accent-warm: #f1bb63;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --radius: 16px;
-            --transition: 0.2s ease;
+            --heading-font: 'Space Grotesk', 'Inter', sans-serif;
+            --radius: 22px;
+            --transition: 0.24s ease;
+            --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.22);
+            --shadow-strong: 0 34px 90px rgba(0, 0, 0, 0.34);
         }
         html { scroll-behavior: smooth; }
-        body { font-family: var(--font); background: var(--bg-main); color: var(--text-main); line-height: 1.5; font-size: 14px; -webkit-font-smoothing: antialiased; }
-        .header { background: var(--bg-surface); border-bottom: 1px solid var(--border); }
-        .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-        .logo { font-size: 2rem; font-weight: 700; color: var(--text-dark); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; letter-spacing: -0.5px; }
-        .logo-icon-wrap { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); border-radius: 10px; padding: 6px; color: #000; box-shadow: 0 0 12px rgba(26, 192, 198, 0.3); }
-        .tagline-banner { max-width: 1400px; margin: 0 auto; padding: 0.8rem 1.5rem; background: transparent; border-bottom: 1px solid var(--border); }
-        .tagline-banner p { font-size: 1rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+        body {
+            font-family: var(--font);
+            background:
+                radial-gradient(circle at 14% 10%, rgba(59, 208, 205, 0.16), transparent 28%),
+                radial-gradient(circle at 88% 12%, rgba(241, 187, 99, 0.12), transparent 22%),
+                radial-gradient(circle at 50% 0%, rgba(75, 126, 255, 0.08), transparent 30%),
+                linear-gradient(180deg, #061624 0%, var(--bg-main) 38%, #02070f 100%);
+            color: var(--text-main);
+            line-height: 1.55;
+            font-size: 14px;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(80px);
+            opacity: 0.34;
+            z-index: 0;
+        }
+        body::before {
+            top: -140px;
+            right: -80px;
+            background: rgba(54, 170, 214, 0.22);
+        }
+        body::after {
+            left: -120px;
+            bottom: -160px;
+            background: rgba(27, 93, 118, 0.18);
+        }
+        .header {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(3, 15, 27, 0.98) 0%, rgba(8, 33, 53, 0.96) 52%, rgba(10, 53, 77, 0.94) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            inset: auto -8% -40% 46%;
+            height: 420px;
+            background: radial-gradient(circle, rgba(241, 187, 99, 0.20) 0%, rgba(241, 187, 99, 0.08) 32%, transparent 65%);
+            transform: rotate(-10deg);
+            pointer-events: none;
+        }
+        .header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(125deg, rgba(255, 255, 255, 0.08), transparent 42%),
+                repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 18px);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+        .header-inner,
+        .tagline-banner,
+        .quick-links,
+        .container,
+        .footer {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .header-inner {
+            padding: 3.25rem 1.5rem 1.5rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.95fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+        .hero-copy {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .eyebrow,
+        .hero-panel-kicker,
+        .overview-kicker {
+            margin: 0 0 0.8rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(198, 230, 245, 0.82);
+        }
+        .logo {
+            font-family: var(--heading-font);
+            font-size: clamp(2.6rem, 5vw, 4.5rem);
+            line-height: 0.96;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: -0.04em;
+            max-width: 11ch;
+        }
+        .hero-lead {
+            margin-top: 1.1rem;
+            max-width: 62ch;
+            font-size: 1.02rem;
+            color: rgba(220, 236, 247, 0.84);
+        }
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.4rem;
+        }
+        .hero-badges span,
+        .quick-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .hero-badges span {
+            padding: 0.55rem 0.95rem;
+            color: var(--text-dark);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(12px);
+        }
+        .hero-panel {
+            padding: 1.55rem;
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(14px);
+            display: grid;
+            gap: 1rem;
+        }
+        .hero-panel-kicker {
+            color: rgba(230, 245, 255, 0.7);
+            margin-bottom: 0.1rem;
+        }
+        .hero-stat {
+            padding: 0.9rem 1rem;
+            border-radius: 18px;
+            background: rgba(2, 9, 18, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-stat strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-family: var(--heading-font);
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            letter-spacing: -0.02em;
+        }
+        .hero-stat span {
+            display: block;
+            color: rgba(220, 236, 247, 0.72);
+            font-size: 0.86rem;
+        }
+        .tagline-banner {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.9fr);
+            gap: 1rem;
+            padding: 0 1.5rem 1.1rem;
+            background: transparent;
+            border-bottom: none;
+        }
+        .tagline-banner p,
+        .tagline-note {
+            padding: 1rem 1.15rem;
+            border-radius: 20px;
+            background: rgba(8, 26, 40, 0.58);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(10px);
+        }
+        .tagline-banner p {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin: 0;
+        }
         .tagline-banner strong { color: var(--accent); }
-        .tagline-banner a { color: var(--text-dark); text-decoration: none; font-weight: 600; border-bottom: 1px dotted var(--accent); transition: color var(--transition); }
+        .tagline-banner a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dotted var(--accent);
+            transition: color var(--transition);
+        }
         .tagline-banner a:hover { color: var(--accent); }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
-        .section-title { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-        .section-title a { font-size: 0.8rem; background: rgba(255,255,255,0.05); color: var(--text-main); padding: 0.2rem 0.6rem; border-radius: 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border); transition: all var(--transition); }
-        .section-title a:hover { background: rgba(26, 192, 198, 0.1); color: var(--accent); border-color: rgba(26, 192, 198, 0.3); }
-        .layer-title { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 1.5rem 0 1rem; display: flex; align-items: center; gap: 8px; }
-        .layer-title::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
-        .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; }
-        .table-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; cursor: pointer; transition: all var(--transition); overflow: hidden; position: relative; }
-        .table-card:hover { border-color: var(--text-light); box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 12px rgba(26, 192, 198, 0.05); transform: translateY(-2px); }
-        .table-card-title { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; color: var(--text-dark); letter-spacing: 0.05em; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.01); }
-        .table-card-title::after { content: "\2197"; color: var(--text-light); font-weight: 400; font-size: 1.1rem; transition: color var(--transition); }
-        .table-card:hover .table-card-title::after { color: var(--accent); }
-        .table-container { flex-grow: 1; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--text-light) transparent; }
+        .tagline-note {
+            display: grid;
+            gap: 0.35rem;
+            align-content: center;
+        }
+        .tagline-note strong {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+        }
+        .tagline-note span {
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0 1.5rem 2.25rem;
+        }
+        .quick-links a {
+            padding: 0.62rem 0.95rem;
+            color: var(--text-dark);
+            background: rgba(4, 16, 28, 0.34);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            transition: transform var(--transition), background var(--transition), border-color var(--transition);
+        }
+        .quick-links a:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.24);
+        }
+        .container {
+            padding: 0 1.5rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .overview-card {
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(9, 29, 45, 0.92), rgba(7, 21, 34, 0.88));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-strong);
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.95fr);
+            gap: 1.25rem;
+        }
+        .overview-card h2 {
+            margin: 0;
+            font-family: var(--heading-font);
+            font-size: clamp(1.6rem, 2vw, 2.35rem);
+            line-height: 1.03;
+            letter-spacing: -0.03em;
+            color: var(--text-dark);
+            max-width: 18ch;
+        }
+        .overview-card p {
+            margin-top: 0.9rem;
+            max-width: 62ch;
+            color: var(--text-muted);
+            font-size: 0.96rem;
+        }
+        .overview-list {
+            display: grid;
+            gap: 0.85rem;
+        }
+        .overview-item {
+            padding: 1rem 1.05rem;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .overview-item strong {
+            display: block;
+            margin-bottom: 0.28rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        .overview-item span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+        }
+        .section-title {
+            font-family: var(--heading-font);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 2.5rem 0 1rem;
+            padding: 1rem 1.15rem;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            background: linear-gradient(180deg, rgba(11, 34, 50, 0.92), rgba(6, 20, 31, 0.88));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+        }
+        .section-title::before {
+            content: "Dataset";
+            font-family: var(--font);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-right: 0.2rem;
+        }
+        .section-title a {
+            font-family: var(--font);
+            font-size: 0.76rem;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            padding: 0.3rem 0.65rem;
+            border-radius: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+        }
+        .section-title a:hover {
+            background: rgba(59, 208, 205, 0.12);
+            color: var(--accent);
+            border-color: rgba(59, 208, 205, 0.3);
+        }
+        .layer-title {
+            font-family: var(--heading-font);
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            margin: 1.65rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .layer-title::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            box-shadow: 0 0 16px rgba(59, 208, 205, 0.32);
+        }
+        .layer-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(59, 208, 205, 0.22), transparent 90%);
+        }
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.35rem;
+        }
+        .table-card {
+            background: linear-gradient(180deg, rgba(11, 33, 49, 0.96), rgba(7, 22, 34, 0.96));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-soft);
+        }
+        .table-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(59, 208, 205, 0.95), rgba(130, 255, 246, 0.55), rgba(241, 187, 99, 0.75));
+            opacity: 0.9;
+        }
+        .table-card:hover {
+            border-color: rgba(136, 255, 245, 0.28);
+            box-shadow: 0 22px 48px rgba(0,0,0,0.36), 0 0 18px rgba(59, 208, 205, 0.08);
+            transform: translateY(-4px);
+        }
+        .table-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            letter-spacing: 0.05em;
+            padding: 1.05rem 1.2rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+        .table-card-title::after {
+            content: "\2197";
+            color: var(--accent-warm);
+            font-weight: 400;
+            font-size: 1.1rem;
+            transition: color var(--transition), transform var(--transition);
+        }
+        .table-card:hover .table-card-title::after {
+            color: var(--accent-hover);
+            transform: translate(2px, -2px);
+        }
+        .table-container {
+            flex-grow: 1;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--text-light) transparent;
+        }
         .table-container::-webkit-scrollbar { height: 4px; background: transparent; }
         .table-container::-webkit-scrollbar-track { background: transparent; }
         .table-container::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 2px; }
         
         table { width: 100%; border-collapse: collapse; }
-        th { padding: 0.75rem 1.25rem; text-align: right; font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); }
+        th { padding: 0.78rem 1.2rem; text-align: right; font-size: 0.64rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-light); background: rgba(255, 255, 255, 0.02); }
         th:first-child, th:nth-child(2) { text-align: left; }
-        td { padding: 0.8rem 1.25rem; text-align: right; font-size: 0.9rem; color: var(--text-main); border-bottom: 1px solid var(--border-light); }
+        td { padding: 0.82rem 1.2rem; text-align: right; font-size: 0.9rem; color: var(--text-main); border-bottom: 1px solid var(--border-light); }
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background: rgba(255,255,255,0.015); }
+        tr:hover td { background: rgba(255,255,255,0.025); }
         td.var-name { text-align: left; font-weight: 600; color: var(--text-dark); width: 30%; }
         td:nth-child(2) { text-align: left; color: var(--text-muted); font-size: 0.7rem; }
         .table-card td[style] { background: transparent !important; color: var(--text-main) !important; }
         .table-card td b { display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--accent); background: rgba(26, 192, 198, 0.1); padding: 0.2rem 0.6rem; border-radius: 20px; border: 1px solid rgba(26, 192, 198, 0.25); letter-spacing: 0.02em; }
         .na { color: var(--text-light) !important; font-style: italic; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 8, 18, 0.85); backdrop-filter: blur(6px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 8, 18, 0.84); backdrop-filter: blur(8px); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
         .overlay.active { display: block; opacity: 1; }
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -48%); z-index: 1001; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(26, 192, 198, 0.1); width: 95vw; max-width: 1400px; max-height: 90vh; overflow: hidden; flex-direction: column; opacity: 0; transition: all 0.3s ease; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -48%); z-index: 1001; background: linear-gradient(180deg, rgba(10, 33, 52, 0.98), rgba(5, 16, 28, 0.98)); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 30px 70px rgba(0,0,0,0.62), 0 0 0 1px rgba(59, 208, 205, 0.08); width: 95vw; max-width: 1400px; max-height: 90vh; overflow: hidden; flex-direction: column; opacity: 0; transition: all 0.3s ease; }
         .modal.active { display: flex; transform: translate(-50%, -50%); opacity: 1; }
-        .modal-header { background: var(--bg-main); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-        .modal-header h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-dark); }
-        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); font-family: var(--font); line-height: 1; transition: color var(--transition); }
+        .modal-header { background: rgba(2, 10, 18, 0.92); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .modal-header h3 { margin: 0; font-size: 1.12rem; font-weight: 800; color: var(--text-dark); }
+        .modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); font-family: var(--font); line-height: 1; transition: color var(--transition), transform var(--transition); }
         .modal-close:hover { color: var(--accent); }
-        .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; flex-shrink: 0; z-index: 10; position: relative; min-height: 48px; align-items: stretch; }
+        .modal-close:hover { transform: scale(1.05); }
+        .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; background: rgba(5, 19, 31, 0.9); border-bottom: 1px solid var(--border); padding: 0 1.5rem; flex-shrink: 0; z-index: 10; position: relative; min-height: 48px; align-items: stretch; }
         .tab-bar:empty { display: none; }
         .tab-bar::-webkit-scrollbar { display: none; }
-        .tab-btn { padding: 0.75rem 1.25rem; cursor: pointer; border: none; background: transparent; font-size: 0.75rem; font-weight: 700; color: var(--text-main); border-bottom: 2px solid transparent; transition: all var(--transition); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .tab-btn { padding: 0.78rem 1.2rem; cursor: pointer; border: none; background: transparent; font-size: 0.74rem; font-weight: 700; color: var(--text-main); border-bottom: 2px solid transparent; transition: all var(--transition); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
         .tab-btn:hover { color: var(--text-dark); }
         .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-        .modal-body { overflow-y: auto; padding: 1.5rem; background: var(--bg-main); flex-grow: 1; }
+        .modal-body { overflow-y: auto; padding: 1.5rem; background: linear-gradient(180deg, #04111d, #02070f); flex-grow: 1; }
         .modal-body::-webkit-scrollbar { width: 8px; }
         .modal-body::-webkit-scrollbar-track { background: var(--bg-main); }
         .modal-body::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 4px; }
@@ -86,34 +486,141 @@
         .tab-content.active { display: block; animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .plot-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
-        .tab-content img { border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); background: #fff; border: 1px solid var(--border); }
-        .footer { max-width: 1400px; margin: 3rem auto 0; padding: 1.5rem; border-top: 1px solid var(--border); text-align: center; }
+        .tab-content img { border-radius: 14px; box-shadow: 0 16px 32px rgba(0,0,0,0.4); background: #fff; border: 1px solid var(--border); }
+        .footer {
+            margin-top: 3rem;
+            padding: 0 1.5rem 2.4rem;
+            border-top: none;
+            text-align: center;
+        }
+        .footer-inner {
+            padding: 1.1rem 1.2rem;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(9, 29, 45, 0.88), rgba(4, 14, 24, 0.9));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
+        }
+        .footer-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.35rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+        @media (max-width: 960px) {
+            .header-inner,
+            .tagline-banner,
+            .overview-card {
+                grid-template-columns: 1fr;
+            }
+            .overview-card {
+                margin-top: -0.5rem;
+            }
+        }
+        @media (max-width: 640px) {
+            .header-inner { padding: 2.6rem 1rem 1.2rem; }
+            .tagline-banner,
+            .quick-links,
+            .container,
+            .footer { padding-left: 1rem; padding-right: 1rem; }
+            .quick-links { padding-bottom: 1.6rem; }
+            .overview-card,
+            .section-title,
+            .table-card,
+            .hero-panel {
+                border-radius: 20px;
+            }
+            .section-title {
+                font-size: 1.15rem;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header class="header">
     <div class="header-inner">
-        <a class="logo" href="#">
-            Ocean BGC Models Benchmark
-        </a>
+        <div class="hero-copy">
+            <p class="eyebrow">OceanBGCBench</p>
+            <a class="logo" href="#">
+                Ocean BGC Models Benchmark
+            </a>
+            <p class="hero-lead">Interactive scorecards comparing FREEBIORYS and BIOMER4 against in-situ, climatological, and satellite observations across productive, mesopelagic, emergent, and surface diagnostics.</p>
+            <div class="hero-badges">
+                <span>2008–2024 evaluation window</span>
+                <span>Maps, scatter plots, and time series on click</span>
+                <span>Single-page model review</span>
+            </div>
+        </div>
+        <div class="hero-panel">
+            <p class="hero-panel-kicker">Read it fast</p>
+            <div class="hero-stat">
+                <strong>BGC-Argo diagnostics</strong>
+                <span>Upper-ocean, mesopelagic, and emergent-property skill in one continuous benchmark.</span>
+            </div>
+            <div class="hero-stat">
+                <strong>Observation families</strong>
+                <span>Profiles, climatology, CO₂ products, and ocean-color views are separated for quicker scanning.</span>
+            </div>
+            <div class="hero-stat">
+                <strong>Interactive evidence</strong>
+                <span>Every card opens the supporting figures without leaving the page.</span>
+            </div>
+        </div>
     </div>
     <div class="tagline-banner">
         <p>Performance Evaluation against In-situ and Satellite Observations (2008–2024).<br>
         Models Evaluated: <strong><a href="https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_BGC_001_029" target="_blank">FREEBIORYS</a></strong> &middot; <strong><a href="https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_BGC_001_028/description" target="_blank">BIOMER4</a></strong></p>
+        <div class="tagline-note">
+            <strong>Tip</strong>
+            <span>Click any scorecard to open maps, scatter plots, or time series and move from compact skill metrics to diagnostic context.</span>
+        </div>
     </div>
+    <nav class="quick-links" aria-label="Jump to benchmark sections">
+        <a href="#bgc-argo">BGC-Argo</a>
+        <a href="#climatology">Climatology</a>
+        <a href="#surface-co2">Surface CO₂</a>
+        <a href="#surface-color">Ocean Color</a>
+    </nav>
 </header>
 
 <main class="container">
 
-    <div class="section-title">
+    <div class="overview-card">
+        <div>
+            <p class="overview-kicker">Benchmark overview</p>
+            <h2>Observation streams organized for fast model comparison</h2>
+            <p>This layout keeps the benchmark content intact while making the reading flow clearer: start with the data family, scan the layer cards, and open figures only when you want spatial or temporal detail.</p>
+        </div>
+        <div class="overview-list">
+            <div class="overview-item">
+                <strong>Layered structure</strong>
+                <span>Productive, mesopelagic, emergent, and surface diagnostics stay visually distinct.</span>
+            </div>
+            <div class="overview-item">
+                <strong>Card-first reading</strong>
+                <span>Each model comparison stays compact until you choose to inspect the supporting plots.</span>
+            </div>
+            <div class="overview-item">
+                <strong>Live evidence</strong>
+                <span>The modal workflow remains unchanged, so the redesign is visual rather than disruptive.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title" id="bgc-argo">
         BGC-Argo Based Observations
         <a href="https://www.seanoe.org/data/00765/102324/" target="_blank">SEANOE 102324</a>
         <a href="https://www.seanoe.org/data/00311/42182/" target="_blank">SEANOE 42182</a>
         <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BGC_NUTRIENTS_CARBON_PROFILES_MYNRT_015_009" target="_blank">CMEMS 015_009</a>
     </div>
 
-    <div class="layer-title">Productive Layer</div>
+    <div class="layer-title" id="bgc-productive">Productive Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="productive" data-surfaceonly="false" data-best="BIOMER4" style="border: 1px solid rgba(26, 192, 198, 0.4); box-shadow: 0 0 8px rgba(26, 192, 198, 0.15);" data-figs='[["MEAN map (comparison)", "figures/chla_productive_mean_map_comparison.png"], ["BIAS map (comparison)", "figures/chla_productive_bias_map_comparison.png"], ["R2 map (comparison)", "figures/chla_productive_r2_map_comparison.png"], ["RMSD map (comparison)", "figures/chla_productive_rmsd_map_comparison.png"], ["NRMSD map (comparison)", "figures/chla_productive_nrmsd_map_comparison.png"], ["Scatter (comparison)", "figures/chla_productive_scatter_comparison.png"]]'>
 <div class="table-card-title">Chlorophyll a</div>
@@ -536,7 +1043,7 @@
 
     </div>
 
-    <div class="layer-title">Mesopelagic Layer</div>
+    <div class="layer-title" id="bgc-mesopelagic">Mesopelagic Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="meso" data-surfaceonly="false" data-best="BIOMER4" style="border: 1px solid rgba(26, 192, 198, 0.4); box-shadow: 0 0 8px rgba(26, 192, 198, 0.15);" data-figs='[["MEAN map (comparison)", "figures/chla_meso_mean_map_comparison.png"], ["BIAS map (comparison)", "figures/chla_meso_bias_map_comparison.png"], ["R2 map (comparison)", "figures/chla_meso_r2_map_comparison.png"], ["RMSD map (comparison)", "figures/chla_meso_rmsd_map_comparison.png"], ["NRMSD map (comparison)", "figures/chla_meso_nrmsd_map_comparison.png"], ["Scatter (comparison)", "figures/chla_meso_scatter_comparison.png"]]'>
 <div class="table-card-title">Chlorophyll a</div>
@@ -959,7 +1466,7 @@
 
     </div>
 
-    <div class="layer-title">Emergent Properties</div>
+    <div class="layer-title" id="bgc-emergent">Emergent Properties</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="chla" data-layer="dcm_depth" data-surfaceonly="false" data-best="BIOMER4" style="border: 1px solid rgba(26, 192, 198, 0.4); box-shadow: 0 0 8px rgba(26, 192, 198, 0.15);" data-figs='[["MEAN map (comparison)", "figures/chla_dcm_depth_mean_map_comparison.png"], ["BIAS map (comparison)", "figures/chla_dcm_depth_bias_map_comparison.png"], ["R2 map (comparison)", "figures/chla_dcm_depth_r2_map_comparison.png"], ["RMSD map (comparison)", "figures/chla_dcm_depth_rmsd_map_comparison.png"], ["NRMSD map (comparison)", "figures/chla_dcm_depth_nrmsd_map_comparison.png"], ["Scatter (comparison)", "figures/chla_dcm_depth_scatter_comparison.png"]]'>
 <div class="table-card-title">DCM depth</div>
@@ -1210,13 +1717,13 @@
 
     </div>
 
-    <div class="section-title">
+    <div class="section-title" id="climatology">
         In-situ Climatology / Database
         <a href="https://doi.pangaea.de/10.1594/PANGAEA.785501" target="_blank">PANGAEA 785501</a>
         <a href="https://www.geotraces.org/" target="_blank">GEOTRACES</a>
     </div>
 
-    <div class="layer-title">Productive Layer</div>
+    <div class="layer-title" id="climatology-productive">Productive Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="productive" data-surfaceonly="false" data-best="BIOMER4" style="border: 1px solid rgba(26, 192, 198, 0.4); box-shadow: 0 0 8px rgba(26, 192, 198, 0.15);" data-figs='[["MEAN map", "figures/mesozoo_productive_mean_map.png"], ["BIAS map", "figures/mesozoo_productive_bias_map.png"], ["R2 map", "figures/mesozoo_productive_r2_map.png"], ["RMSD map", "figures/mesozoo_productive_rmsd_map.png"], ["NRMSD map", "figures/mesozoo_productive_nrmsd_map.png"], ["Scatter (comparison)", "figures/mesozoo_productive_scatter_comparison.png"]]'>
 <div class="table-card-title">Mesozooplankton</div>
@@ -1293,7 +1800,7 @@
 
     </div>
 
-    <div class="layer-title">Mesopelagic Layer</div>
+    <div class="layer-title" id="climatology-mesopelagic">Mesopelagic Layer</div>
     <div class="tables-grid">
 <div class="table-card" data-varkey="mesozoo" data-layer="meso" data-surfaceonly="false" data-best="BIOMER4" style="border: 1px solid rgba(26, 192, 198, 0.4); box-shadow: 0 0 8px rgba(26, 192, 198, 0.15);" data-figs='[["MEAN map", "figures/mesozoo_meso_mean_map.png"], ["BIAS map", "figures/mesozoo_meso_bias_map.png"], ["R2 map", "figures/mesozoo_meso_r2_map.png"], ["RMSD map", "figures/mesozoo_meso_rmsd_map.png"], ["NRMSD map", "figures/mesozoo_meso_nrmsd_map.png"], ["Scatter (comparison)", "figures/mesozoo_meso_scatter_comparison.png"]]'>
 <div class="table-card-title">Mesozooplankton</div>
@@ -1370,7 +1877,7 @@
 
     </div>
 
-    <div class="section-title">
+    <div class="section-title" id="surface-co2">
         CMEMS Observation-based CO₂
         <a href="https://data.marine.copernicus.eu/product/MULTIOBS_GLO_BIO_CARBON_SURFACE_MYNRT_015_008" target="_blank">CMEMS 015_008</a>
     </div>
@@ -1520,7 +2027,7 @@
 
     </div>
 
-    <div class="section-title">
+    <div class="section-title" id="surface-color">
         Ocean Color Satellite-derived
         <a href="https://zenodo.org/records/7849935" target="_blank">Zenodo 7849935</a>
     </div>
@@ -1595,11 +2102,9 @@
 </div>
 
 <footer class="footer">
-    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem; font-size: 0.8rem;">
-        Generated by Ocean BGC Models Benchmark
-    </div>
-    <div style="color: var(--text-muted); font-size: 0.75rem;">
-        Mercator Ocean International &mdash; Created by A. Mignot
+    <div class="footer-inner">
+        <div class="footer-title">Generated by Ocean BGC Models Benchmark</div>
+        <div class="footer-copy">Mercator Ocean International &mdash; Created by A. Mignot</div>
     </div>
 </footer>
 
@@ -1707,5 +2212,3 @@ document.querySelectorAll('.table-card').forEach(function(card) {
 </script>
 </body>
 </html>
-
-
